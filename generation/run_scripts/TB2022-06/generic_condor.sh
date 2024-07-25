@@ -17,9 +17,9 @@ particle=$1
 energy=$2
 #conf=$3
 
-ilcsoft_path="/cvmfs/ilc.desy.de/sw/x86_64_gcc82_centos7/v02-03"
+ilcsoft_path="/cvmfs/ilc.desy.de/sw/x86_64_gcc103_centos7/v02-03"
 local=$PWD
-geometry_folder="/lhome/ific/m/marherje/Simplified_ECAL_PID/generation/run_scripts/TB2022-06"
+geometry_folder="/lhome/ific/m/marherje/Simplified_ECAL_PID/generation/geometry/ECALHCAL_TB2022-06"
 data_path="${local}/data"
 steer_path="${local}/steer"
 log_path="${local}/log"
@@ -56,8 +56,8 @@ physl=("QGSP_BERT")
 
 #for energy in ${ens[@]}; do
 for physlist in ${physl[@]}; do
-  for it in {1..10}; do
-    echo $energy $particle $iter
+  for it in {1..1}; do
+    echo $energy $particle $it
     
     label=${physlist}_TB2022-06_${particle}_${energy}GeV_${it}
     echo $label
@@ -99,7 +99,7 @@ EOF
     cat > ${local}/steer/$condorsh <<EOF
 #!/bin/bash
 cp -r ${local}/steer/runddsim_${label}.* .
-source /lhome/ific/m/marherje/Simplified_ECAL_PID/init_key4hep.sh
+source /lhome/ific/m/marherje/Simplified_ECAL_PID/init_ilcsoft_v02-03-03.sh
 ddsim --enableG4GPS --macroFile ${local}/macros/${macfile} --steeringFile ${local}/steer/$scriptname
 &> ${local}/log/${label}.log
 #tar czvf ${local}/TB2022-06_${label}.slcio.tar.gz TB2022-06_${label}.slcio 
@@ -117,6 +117,7 @@ output                  = outfile_$condorfile.txt
 error                   = errors_$condorfile.txt
 should_transfer_files   = Yes
 when_to_transfer_output = ON_EXIT
++JobFlavour = "largo"
 queue 1
 EOF
 
