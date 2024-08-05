@@ -1,8 +1,8 @@
 #!/bin/bash
 
-ORIGIN=/nfs/dust/ilc/user/marquezh/SiWECAL_p_AHCAL_Sim/processors/ECAL
+ORIGIN=/lhome/ific/m/marherje/Simplified_ECAL_PID/processors/ECAL
 source $ORIGIN/init_ilcsoft_v02-02-03.sh
-echo $PWD                                                                                                                                                                  
+echo $PWD
 
 #cd $ORIGIN
 #. /cvmfs/sft.cern.ch/lcg/releases/gcc/8.2.0-3fa06/x86_64-centos7/setup.sh
