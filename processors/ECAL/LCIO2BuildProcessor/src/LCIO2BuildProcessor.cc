@@ -388,11 +388,11 @@ namespace CALICE
 	    vector<float> hitZtolayer;
 	    float smallestdistance=9999.;
 	    float hitZ=aHit->getPosition()[2];
-	    int NLayers = int(_FixedPosZ.size());
+	    
 
 	    if(_FixedPosZ.size() == 0) streamlog_out(ERROR)<<"Missing slabs info"<<std::endl;
 
-            for (int ilayer = 0; ilayer < NLayers; ilayer++){
+            for (int ilayer = 0; _FixedPosZ_float.size(); ilayer++){
 	      hitZtolayer.push_back(abs(_FixedPosZ_float[ilayer]-hitZ));
               //streamlog_out(DEBUG)<<"Layer comparing: "<<ilayer<<", Distance: "<<hitZtolayer.at(ilayer)<<endl;
               if(ilayer==0) {
@@ -411,7 +411,7 @@ namespace CALICE
             }
             streamlog_out(DEBUG)<<"Closest slab: "<<i_slab<<". Distance: "<<hitZtolayer.at(i_slab)<<endl;
 
-	    for (int ilayer = 0; ilayer < NLayers; ilayer++){
+	    for (int ilayer = 0; ilayer < _FixedPosZ_float.size(); ilayer++){
 	      if ( (_FixedPosZ_float[ilayer] > (aHit->getPosition()[2] - _siThicknesses_float.at(ilayer)) ) &&
 		(_FixedPosZ_float[ilayer] < (aHit->getPosition()[2] + _siThicknesses_float.at(ilayer)) ) ) {
 		hit_slab.push_back(ilayer);
