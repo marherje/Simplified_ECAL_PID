@@ -1,17 +1,10 @@
 
-Tutorial for Flavour tagging in LCFI+ (and prerequisites for PSO):
--Three main algorithms: TrackNTuple,  MakeNTuple, TrainMVA.
-       -TrackNTuple: Prepare vertexing info, you probably won't need to re-do it.
-       -MakeNTuple: Prepare the data for training. Here's where you use for new MC data for new weights.
-       -TrainMVA: Use the data to train the BDTs and prepare the weights you use for FT. This is what we optimize with PSO.
--Pre-requisites:
-	-You need "pure" samples for each class (b-jets, c-jets, uds-jets).
-	-You can use a processor before MakeNTuple to extract the desired flavour in each case.
-	     -Here's such processor (https://github.com/marherje/LCIO_Extraction.git).
-	     -Notice the ISR cut values that define what we consider signal: we used k_isr<35GeV for the 250GeV and k_isr<50GeV for the 500GeV samples.
-	-After you have the MakeNTuples for b,c and uds you're ready to go to the TrainMVA optimisation using the PSO!
 
-Tutorial to use Particle Swarm Optimization (PSO) for LCFI+:
+Pre-requisites for PSO:
+  -You need "pure" samples for each class (e-, pi-, mu-, etc.).
+  -You might need to use data/macro_interaction.sh for extract only events in which the particle interacts with the detector.
+
+Tutorial to use Particle Swarm Optimization (PSO):
 
 1) Clone the repository
 
@@ -42,4 +35,16 @@ The Training of the BDTs is done on the batch system and is implemented in Parti
     This way is more stable and straight-forward. Adapt it to yourself!
 
 5) After each iteration the ten best classifiers are writen to PSOResult.txt
+   You can also look at it in the Log file
    The best classifier and all necessary information is written to a .conf file
+
+To analysis the results:
+1) Get the info for the best value and scan which particle have that performance, do:
+       grep -r output "ROCVALUE"
+       where "ROCVALUE" is the score of the best performing "particle" (BDT)
+2) Copy the TMVA file of that particle into PlotTools/PerformancePlots/ROOTFILES
+2.1) Put an appropiate name for it.
+
+3) In PlotTools/PerformancePlots there are the main scripts and macros to study the performance of the classifier.
+3.1) One might need to weight the events for a real estimation of the performance: Use data/macro_events.sh for this task
+3.2) Use those weights in the macros in PlotTools/PerformancePlots
